@@ -116,20 +116,146 @@ if 문이나 for 문과 같은 제어문 또는 삼항 조건 연산자의 조�
 - NaN
 - ’’ (빈문자열)
 
+### 9-3. 명시적 타입 변환
+
+```text
+1️⃣ 표준 빌트인 생성자 함수 (String, Number, Boolean)를 new 연산자 없이 호출하는 방법
+2️⃣ 자바스크립트 빌트인 메서드를 사용하는 방법
+3️⃣ 암묵적 타입 변환을 이용하는 방법
+```
+
+#### 9-3-1. 문자열 타입으로 변환
+
+- String 생성자 함수를 new 연산자 없이 호출하는 방법
+- Object.prototype.toString 메서드를 사용하는 방법
+- 문자열 연결 연산자를 이용하는 방법
+
+#### 9-3-2. 숫자 타입으로 변환
+
+- Number 생성자 함수를 new 연산자 없이 호출하는 방법
+- parseInt, parseFloat 함수를 사용하는 방법 (문자열만 숫자 타입으로 변환 가능)
+- "+" 단항 산술 연산자를 이용하는 방법 (암묵적 방법)
+- "*" 산술 연산자를 이용하는 방법 (암묵적 방법)
+
+### 9-3-3. 불리언 타입으로 변환
+
+- Boolean 생성자 함수를 new 연산자 없이 호출하는 방법
+- ! 부정 논리 연산자를 두 번 사용하는 방법
+  ```javascript
+  // 2. ! 부정 논리 연산자를 두번 사용하는 방법
+  // 문자열 타입 => 불리언 타입
+  console.log(!!'x');       // true
+  console.log(!!'');        // false
+  console.log(!!'false');   // true
+  // 숫자 타입 => 불리언 타입
+  console.log(!!0);         // false
+  console.log(!!1);         // true
+  console.log(!!NaN);       // false
+  console.log(!!Infinity);  // true
+  // null 타입 => 불리언 타입
+  console.log(!!null);      // false
+  // undefined 타입 => 불리언 타입
+  console.log(!!undefined); // false
+  // 객체 타입 => 불리언 타입
+  console.log(!!{});        // true
+  console.log(!![]);        // true
+  ```
 
 
+### 9-4. 단축 평가
+
+#### 9-4-1. 논리 연산자 (논리합, 논리곱) 를 사용한 단축 평가
+
+논리곱 연산자 &&와 논리합 연산자 ||는 논리 평가를 결정한 피연산자의 평가 결과를 그대로 반환한다. 이를 단축 평가(Short-Circuit evaluation)라 부른다.
+
+ |단축 평가 표현식|평가 결과|
+ |------|-----|
+ |true II anything|true|
+ |false II anything|anything|
+ |true && anything|anything|
+ |false && anything|false|
 
 
+🍄 논리곱 연산자 &&는 두개의 피연산자가 모두 true로 평가될 때 true를 반환한다.
+
+```javascript
+// 논리곱 연산자의 사용 예시
+'Cat' && 'Dog' // “Dog”
+```
+대부분의 연산자가 그렇듯이 논리곱 연산자도 오른쪽에서 왼쪽으로 평가가 진행된다.
+
+```text
+1️⃣ 첫번째 피연산자 ‘Cat’은 Truthy 값이므로 true로 평가된다.
+→ 하지만 이 시점까지는 위 표현식을 평가할 수 없다. 두번째 피연산자까지 평가해 보아야 위 표현식을 평가할 수 있다.
+
+2️⃣ 두번째 피연산자 ‘Dog’은 Truthy 값이므로 true로 평가된다.
+→ 이때 두개의 피연산자가 모두 true로 평가되었다. 이때 논리곱 연산의 결과를 결정한 것은 두번째 피연산자 ‘Dog’다.
+
+3️⃣ 논리곱 연산자 &&는 논리 연산의 결과를 결정한 두번째 피연산자의 평가 결과 즉, 문자열 ‘Dog’를 그대로 반환한다.
+```
+
+🍄 논리합 연산자 || 는 두개의 피연산자 중 하나만 true로 평가되어도 true를 반환한다.
+
+```javascript
+'Cat' || 'Dog' // 'Cat'
+```
+대부분의 연산자가 그렇듯이 논리합 연산자도 오른쪽에서 왼쪽으로 평가가 진행된다.
+
+```text
+1️⃣ 첫번째 피연산자 ‘Cat’은 Truthy 값이므로 true로 평가된다.
+→ 이 시점에 두번째 피연산자까지 평가해 보지 않아도 위 표현식을 평가할 수 있다.
+
+2️⃣ 논리합 연산자 || 는 논리 연산의 결과를 결정한 첫번째 피연산자의 평가 결과 즉, 문자열 ‘Cat’를 그대로 반환한다.
+```
 
 
+#### 9-4-2. 옵셔널 체이닝 연산자 (?.)
 
+옵셔널 체이닝 연산자 ?. 는 좌항의 피연산자가 null 또는 undefined 인 경우 undefined 를 반환하고, 그렇지 않으면 우항의 프로퍼티 참조를 이어간다.
 
+☘️ 논리 연산자 (&&) 를 사용한 코드의 예시
 
+  ```javascript
+  var str = '';
+  
+  // 문자열의 길이(length)를 참조한다.
+  var length = str && str.length;
+  
+  // 문자열의 길이(length)를 참조하지 못한다.
+  console.log(length)l // ''
+  ```
 
+🌷 옵셔널 체이닝 연산자를 사용한 코드의 예시
 
+  ```javascript
+  var str = '';
+  
+  // 문자열의 길이(length)를 참조한다. 이때 좌항 피연산자가 false 로 평가되는 Falsy 값이라도
+  // null 또는 undefined 가 아니면 우항의 프로퍼티 참조를 이어간다.
+  var length = str?.length;
+  console.log(length); // 0
+  ```
 
+#### 9-4-3. null 병합 연산자 (??)
 
+null 병합 연산자 ?? 는 좌항의 피연산자가 null 또는 undefined 인 경우 우항의 피연산자를 반환하고, 그렇지 않으면 좌항의 피연산자를 반환한다.
 
+null 병합 연산자 ?? 는 변수에 기본값을 설정할 때 유용하다.
+
+☘️ 논리 연산자 (||) 를 사용한 코드의 예시
+
+  ```javascript
+  // Falsy 값인 0이나 ''도 기본값으로서 유효하다면 예기치 않은 동작이 발생할 수 있다.
+  var foo = '' || 'default string';
+  console.log(foo); // "default string";
+  ```
+🌷 null 병합 연산자를 사용한 코드의 예시
+
+  ```javascript
+  // 좌항의 피연산자가 Falsy 값이라도 null 또는 undefined 가 아니면 좌항의 피연산자를 반환한다.
+  var foo = '' ?? 'default string';
+  console.log(foo); // ""
+  ```
 
 
 
